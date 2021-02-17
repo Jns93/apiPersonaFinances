@@ -40,5 +40,17 @@ Route::group([
     Route::put('/expenses/pay', 'ExpenseController@pay');
     Route::put('/expenses/update', 'ExpenseController@update');
 
+    Route::get('/incomes', 'IncomeController@index');
+    Route::get('/incomes/byMonth', 'IncomeController@getIncomesByMonth');
+    Route::post('/incomes/store', 'IncomeController@store');
+    Route::delete('/incomes/delete', 'IncomeController@delete');
+    Route::put('/incomes/pay', 'IncomeController@pay');
+    Route::put('/incomes/update', 'IncomeController@update');
+
+    Route::get('/dashboard/balance', 'DashboardController@getBalanceByMonth');
+    Route::get('/dashboard/incomes/amount-total', 'DashboardController@getTotalAmountIncomesByMonth');
+    Route::get('/dashboard/expenses/amount-total', 'DashboardController@getTotalAmountExpensesByMonth');
+    Route::get('/dashboard/percent-of-savings', 'DashboardController@getPercentageOfSavingsByMonth');
+
 });
 

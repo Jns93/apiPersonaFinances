@@ -172,7 +172,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $expense->subcategory_id = $request['subcategory_id'];
         $expense->name = $request['name'];
         $expense->description = $request['description'];
-        $expense->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+        $expense->amount = str_replace(['.',','], ['','.'], $request['amount']);
         $expense->installments = $request['installments'];
         $expense->fl_pay = $request['fl_pay'];
         $expense->fl_essential = $request['fl_essential'];
@@ -182,5 +182,14 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $expense->save();
 
         return Expense::find($expense->id)->with('category')->get()->first();
+    }
+
+    public function getTotalAmountExpensesByMonth($month)
+    {
+        $carbon = new Carbon($month);
+
+        return Expense::whereMonth('due_date', '=', $carbon->month)
+                        ->whereYear('due_date', '=', $carbon->year)
+                        ->sum('amount');
     }
 }

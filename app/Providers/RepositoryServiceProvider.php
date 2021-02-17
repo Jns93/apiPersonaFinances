@@ -8,12 +8,16 @@ use App\Repositories\Contracts\{
     CategoryRepositoryInterface,
     SubcategoryRepositoryInterface,
     ExpenseRepositoryInterface,
+    IncomeRepositoryInterface,
+    DashboardRepositoryInterface,
 };
 
 use App\Repositories\{
     CategoryRepository,
     SubcategoryRepository,
     ExpenseRepository,
+    IncomeRepository,
+    DashboardRepository,
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -38,6 +42,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ExpenseRepositoryInterface::class,
             ExpenseRepository::class
+        );
+
+        $this->app->bind(
+            IncomeRepositoryInterface::class,
+            IncomeRepository::class
+        );
+
+        $this->app->bind(
+            DashboardRepositoryInterface::class,
+            DashboardRepository::class
         );
     }
 

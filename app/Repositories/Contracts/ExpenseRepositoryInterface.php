@@ -11,4 +11,5 @@ interface ExpenseRepositoryInterface
     public function delete(int $id);
     public function pay(array $ids);
     public function update(array $request);
+    public function getTotalAmountExpensesByMonth($month);
 }

@@ -10,4 +10,7 @@ interface IncomeRepositoryInterface
     public function pay(array $ids);
     public function update(array $request);
     public function getTotalAmountIncomesByMonth($month);
+    public function getAverageIncomes($year);
+    public function getIncomesYearForChart($year);
+    public function getExpensesToBeDue();
 }

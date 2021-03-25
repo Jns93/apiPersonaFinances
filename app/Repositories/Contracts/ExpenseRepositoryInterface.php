@@ -12,4 +12,7 @@ interface ExpenseRepositoryInterface
     public function pay(array $ids);
     public function update(array $request);
     public function getTotalAmountExpensesByMonth($month);
+    public function getAverageExpenses($year);
+    public function getExpensesYearForChart($year);
+    public function getExpensesToBeDue();
 }

@@ -35,4 +35,44 @@ class DashboardController extends Controller
     {
         return $percentOfSavings = $this->dashboardService->calculatePercentageOfSavingsByMonth($request);
     }
+
+    public function getBalanceGoalByMonth(Request $request)
+    {
+        return $balanceGoal = $this->dashboardService->calculateBalanceGoalByMonth($request);
+    }
+
+    public function getAverageIncomesByYear(Request $request)
+    {
+        return $averageIncomes = $this->dashboardService->calculateAverageIncomesByYear($request);
+    }
+
+    public function getAverageExpensesByYear(Request $request)
+    {
+        return $averageExpenses = $this->dashboardService->calculateAverageExpensesByYear($request);
+    }
+
+    public function getAveragePercentOfSavingByYear(Request $request)
+    {
+        return $averagePercent = $this->dashboardService->calculateAveragePercentOfSavingByYear($request);
+    }
+
+    public function getExpensesYearForChart(Request $request)
+    {
+        return $expensesForChart = $this->dashboardService->getExpensesYearForChart($request);
+    }
+
+    public function getIncomesYearForChart(Request $request)
+    {
+        return $incomesForChart = $this->dashboardService->getIncomesYearForChart($request);
+    }
+
+    public function getExpensesToBeDue()
+    {
+        return $expensesToBeDue = $this->dashboardService->getExpensesToBeDue();
+    }
+
+    public function getIncomesToBeDue()
+    {
+        return $incomesToBeDue = $this->dashboardService->getIncomesToBeDue();
+    }
 }

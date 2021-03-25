@@ -20,7 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([
     'prefix' => 'v1',
-    'namespace' => 'Api'
+    'namespace' => 'Api',
+    'middleware' => 'throttle:60,1'
 ], function () {
     Route::get('/categories', 'CategoryController@index');
     Route::post('/categories/store', 'CategoryController@store');
@@ -51,6 +52,13 @@ Route::group([
     Route::get('/dashboard/incomes/amount-total', 'DashboardController@getTotalAmountIncomesByMonth');
     Route::get('/dashboard/expenses/amount-total', 'DashboardController@getTotalAmountExpensesByMonth');
     Route::get('/dashboard/percent-of-savings', 'DashboardController@getPercentageOfSavingsByMonth');
-
+    Route::get('/dashboard/balance-goal-by-month', 'DashboardController@getBalanceGoalByMonth');
+    Route::get('/dashboard/incomes/average-incomes-by-Year', 'DashboardController@getAverageIncomesByYear');
+    Route::get('/dashboard/expenses/average-expenses-by-Year', 'DashboardController@getAverageExpensesByYear');
+    Route::get('/dashboard/average-percent-of-saving-by-Year', 'DashboardController@getAveragePercentOfSavingByYear');
+    Route::get('/dashboard/expenses/expenses-year-for-chart', 'DashboardController@getExpensesYearForChart');
+    Route::get('/dashboard/incomes/incomes-year-for-chart', 'DashboardController@getIncomesYearForChart');
+    Route::get('/dashboard/expenses/expenses-to-be-due', 'DashboardController@getExpensesToBeDue');
+    Route::get('/dashboard/incomes/incomes-to-be-due', 'DashboardController@getIncomesToBeDue');
 });
 

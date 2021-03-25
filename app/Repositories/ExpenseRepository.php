@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Expense;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseRepository implements ExpenseRepositoryInterface
 {
@@ -191,5 +192,39 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         return Expense::whereMonth('due_date', '=', $carbon->month)
                         ->whereYear('due_date', '=', $carbon->year)
                         ->sum('amount');
+    }
+//CORRIGIR -> NECESSARIO PEGAR PELA COLUNA DUE_DATE AO INVES DE CREATED_AT
+    public function getAverageExpenses($year)
+    {
+        return $teste = DB::table('expenses')
+                            ->select(
+                                DB::raw('sum(amount) as amount'),
+                                DB::raw('MONTH(due_date) month'))
+                            ->whereYear('created_at', $year)
+                            ->groupBy('month')
+                            ->get()
+                            ->avg('amount');
+    }
+
+    public function getExpensesYearForChart($year)
+    {
+        return $expensesForChart = DB::table('expenses')
+                                        ->select(
+                                            DB::raw('sum(amount) as amount'),
+                                            DB::raw("MONTH(due_date) as month")
+                                        )
+                                        ->whereYear('due_date', $year)
+                                        ->groupBy(DB::raw("MONTH(due_date)"))
+                                        ->get();
+    }
+
+    public function getExpensesToBeDue()
+    {
+        $carbon = Carbon::now()->addDays(15);
+        // dd($carbon);
+        return Expense::where('due_date', '<', $carbon)
+                        ->where('fl_Pay', '=', false)
+                        ->with('category')
+                        ->get();
     }
 }

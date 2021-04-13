@@ -13,16 +13,12 @@ class IncomeService
         $this->incomeRepository = $incomeRepository;
     }
 
-    // public function getIncomes()
-    // {
-    //     return $incomes = $this->incomeRepository->getIncomes();
-    // }
-
     public function getIncomesByMonth($request)
     {
         $date = $request['due_date'];
+        $userId = $request['userId'];
 
-        return $incomes = $this->incomeRepository->getIncomesByMonth($date);
+        return $incomes = $this->incomeRepository->getIncomesByMonth($userId, $date);
     }
 
 
@@ -30,11 +26,6 @@ class IncomeService
     {
        return $income = $this->incomeRepository->store($request);
     }
-
-    // public function storeInstallment(array $request)
-    // {
-    //     return $income = $this->incomeRepository->storeInstallment($request);
-    // }
 
     public function delete($id)
     {

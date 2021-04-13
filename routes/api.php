@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Route::get('teste', function() {
+//     $user = User::first();
+
+//     //Criando token com sanctum:
+//     $token = $user->createToken('name-token');
+// });
+//verifica se está autenticado e cria o token (fora do middleware pq ela valida se a senha esta certa e gera o token que passa pelo midle)
+
+
+// Route::group([
+//     'prefix' => 'v1',
+//     'middleware' => ['auth:sanctum']
+// ], function () {
+//     Route::get('/auth/me', 'Api\Auth\AuthUserController@me'); //Rota para recuperar user (requer o token gerado na rota sanctum/token)
+//     Route::post('/auth/logout', 'Api\Auth\AuthUserController@logout');
+// });
+Route::post('/v1/sanctum/token', 'Api\Auth\AuthUserController@auth');
+
 Route::group([
     'prefix' => 'v1',
     'namespace' => 'Api',
-    'middleware' => 'throttle:60,1'
+    'middleware' => 'throttle:90,1',
+    'middleware' => ['auth:sanctum']
 ], function () {
+    Route::get('/auth/me', 'Auth\AuthUserController@me'); //Rota para recuperar user (requer o token gerado na rota sanctum/token)
+    Route::post('/auth/logout', 'Auth\AuthUserController@logout');
+
     Route::get('/categories', 'CategoryController@index');
     Route::post('/categories/store', 'CategoryController@store');
     Route::put('/categories/update', 'CategoryController@update');
@@ -60,5 +83,7 @@ Route::group([
     Route::get('/dashboard/incomes/incomes-year-for-chart', 'DashboardController@getIncomesYearForChart');
     Route::get('/dashboard/expenses/expenses-to-be-due', 'DashboardController@getExpensesToBeDue');
     Route::get('/dashboard/incomes/incomes-to-be-due', 'DashboardController@getIncomesToBeDue');
+
+    Route::post('/register-user', 'Auth\RegisterController@registerUser');
 });
 

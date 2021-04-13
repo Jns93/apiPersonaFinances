@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Income extends Model
 {
     protected $fillable = [
+        'user_id',
         'category_id',
         'subcategory_id',
         'name',
@@ -16,7 +17,7 @@ class Income extends Model
     ];
 
     protected $hidden = [
-        'user_id',
+
     ];
 
     public function category()

@@ -13,10 +13,11 @@ class Expense extends Model
         'amount',
         'installments',
         'date',
+        'user_id',
     ];
 
     protected $hidden = [
-        'user_id',
+
     ];
 
     public function category()

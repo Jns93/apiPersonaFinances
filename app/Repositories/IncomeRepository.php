@@ -16,11 +16,13 @@ class IncomeRepository implements IncomeRepositoryInterface
         $this->table = 'categories';
     }
 
-    public function getIncomesByMonth($date)
+    public function getIncomesByMonth($userId, $date)
     {
         $carbon = new Carbon($date);
+
         return Income::whereMonth('due_date', '=', $carbon->month)
                         ->whereYear('due_date', '=', $carbon->year)
+                        ->where('user_Id', '=', $userId)
                         ->with('category')
                         ->get();
     }
@@ -78,28 +80,30 @@ class IncomeRepository implements IncomeRepositoryInterface
         return Income::find($income->id)->with('category')->get()->first();
     }
 
-    public function getTotalAmountIncomesByMonth($month)
+    public function getTotalAmountIncomesByMonth($userId, $month)
     {
         $carbon = new Carbon($month);
 
         return Income::whereMonth('due_date', '=', $carbon->month)
                         ->whereYear('due_date', '=', $carbon->year)
+                        ->where('user_Id', '=', $userId)
                         ->sum('amount');
     }
 
-    public function getAverageIncomes($year)
+    public function getAverageIncomes($userId, $year)
     {
         return $teste = DB::table('incomes')
                             ->select(
                                 DB::raw('sum(amount) as amount'),
                                 DB::raw('MONTH(due_date) month'))
-                            ->whereYear('created_at', $year)
+                            ->whereYear('due_date', $year)
+                            ->where('user_Id', '=', $userId)
                             ->groupBy('month')
                             ->get()
                             ->avg('amount');
     }
 
-    public function getIncomesYearForChart($year)
+    public function getIncomesYearForChart($userId, $year)
     {
         return $incomesForChart = DB::table('incomes')
                                         ->select(
@@ -111,22 +115,13 @@ class IncomeRepository implements IncomeRepositoryInterface
                                         ->get();
     }
 
-    public function getExpensesToBeDue()
-    {
-        $carbon = Carbon::now()->addDays(15);
-        // dd($carbon);
-        return Expense::where('due_date', '<', $carbon)
-                        ->where('fl_Pay', '=', false)
-                        ->with('category')
-                        ->get();
-    }
-
-    public function getIncomesToBeDue()
+    public function getIncomesToBeDue($userId)
     {
         $carbon = Carbon::now()->addDays(15);
         // dd($carbon);
         return Income::where('due_date', '<', $carbon)
                         ->where('fl_Pay', '=', false)
+                        ->where('user_id', '=', $userId)
                         ->with('category')
                         ->get();
     }

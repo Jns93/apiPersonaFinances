@@ -69,6 +69,11 @@ class SubCategoriesTableSeeder extends Seeder
 
         SubCategory::create([
             'Category_id' => 2,
+            'name' => 'Restaurante',
+        ]);
+
+        SubCategory::create([
+            'Category_id' => 2,
             'name' => 'Outros',
         ]);
 

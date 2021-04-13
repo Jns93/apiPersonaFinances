@@ -17,9 +17,9 @@ class ExpenseController extends Controller
         $this->expenseService = $expenseService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $expenses = $this->expenseService->getExpenses();
+        return $expenses = $this->expenseService->getExpenses($request);
     }
 
     public function getExpensesByMonth(Request $request)

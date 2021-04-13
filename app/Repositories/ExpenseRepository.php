@@ -16,16 +16,18 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $this->table = 'categories';
     }
 
-    public function getExpenses()
+    public function getExpenses($userId)
     {
-        return Expense::with('category')->get();
+        return Expense::where('user_Id', '=', $userId)
+                        ->with('category')->get();
     }
 
-    public function getExpensesByMonth($date)
+    public function getExpensesByMonth($userId, $date)
     {
         $carbon = new Carbon($date);
         // dd($carbon);
         return Expense::whereMonth('due_date', '=', $carbon->month)
+                        ->where('user_Id', '=', $userId)
                         ->whereYear('due_date', '=', $carbon->year)
                         ->with('category')
                         ->get();
@@ -50,7 +52,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newexpense->save();
 
             $newexpense2 = new Expense();
-            $newexpense2->user_id = 1;
+            $newexpense2->user_id = 2;
             $newexpense2->category_id = $request['category_id'];
             $newexpense2->subcategory_id = $request['subcategory_id'];
             $newexpense2->name = $request['name'];
@@ -185,28 +187,30 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         return Expense::find($expense->id)->with('category')->get()->first();
     }
 
-    public function getTotalAmountExpensesByMonth($month)
+    public function getTotalAmountExpensesByMonth($userId, $month)
     {
         $carbon = new Carbon($month);
 
         return Expense::whereMonth('due_date', '=', $carbon->month)
                         ->whereYear('due_date', '=', $carbon->year)
+                        ->where('user_id', '=', $userId)
                         ->sum('amount');
     }
-//CORRIGIR -> NECESSARIO PEGAR PELA COLUNA DUE_DATE AO INVES DE CREATED_AT
-    public function getAverageExpenses($year)
+
+    public function getAverageExpenses($userId, $year)
     {
         return $teste = DB::table('expenses')
                             ->select(
                                 DB::raw('sum(amount) as amount'),
                                 DB::raw('MONTH(due_date) month'))
-                            ->whereYear('created_at', $year)
+                            ->whereYear('due_date', $year)
+                            ->where('user_id', '=', $userId)
                             ->groupBy('month')
                             ->get()
                             ->avg('amount');
     }
 
-    public function getExpensesYearForChart($year)
+    public function getExpensesYearForChart($userId, $year)
     {
         return $expensesForChart = DB::table('expenses')
                                         ->select(
@@ -218,12 +222,13 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                                         ->get();
     }
 
-    public function getExpensesToBeDue()
+    public function getExpensesToBeDue($userId)
     {
         $carbon = Carbon::now()->addDays(15);
         // dd($carbon);
         return Expense::where('due_date', '<', $carbon)
                         ->where('fl_Pay', '=', false)
+                        ->where('user_id', '=', $userId)
                         ->with('category')
                         ->get();
     }

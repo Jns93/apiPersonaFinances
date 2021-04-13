@@ -21,10 +21,10 @@ class DashboardRepository implements DashboardRepositoryInterface
         $this->incomeRepository = $incomeRepository;
     }
 
-    public function getAveragePercentOfSavingByYear($year)
+    public function getAveragePercentOfSavingByYear($userId, $year)
     {
-        $averageIncomes = $this->incomeRepository->getAverageIncomes($year);
-        $averageExpenses = $this->expenseRepository->getAverageExpenses($year);
+        $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
+        $averageExpenses = $this->expenseRepository->getAverageExpenses($userId, $year);
 
         $percentOfSaving = 0;
         if($averageIncomes != 0 and $averageExpenses != 0) {

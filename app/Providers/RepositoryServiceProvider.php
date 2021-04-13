@@ -10,6 +10,7 @@ use App\Repositories\Contracts\{
     ExpenseRepositoryInterface,
     IncomeRepositoryInterface,
     DashboardRepositoryInterface,
+    UserRepositoryInterface,
 };
 
 use App\Repositories\{
@@ -18,6 +19,7 @@ use App\Repositories\{
     ExpenseRepository,
     IncomeRepository,
     DashboardRepository,
+    UserRepository,
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -52,6 +54,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             DashboardRepositoryInterface::class,
             DashboardRepository::class
+        );
+
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
     }
 

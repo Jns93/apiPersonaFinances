@@ -13,16 +13,19 @@ class ExpenseService
         $this->expenseRepository = $expenseRepository;
     }
 
-    public function getExpenses()
+    public function getExpenses($request)
     {
-        return $expenses = $this->expenseRepository->getExpenses();
+        $userId = $request['id'];
+
+        return $expenses = $this->expenseRepository->getExpenses($userId);
     }
 
     public function getExpensesByMonth($request)
     {
         $date = $request['due_date'];
- 
-        return $expenses = $this->expenseRepository->getExpensesByMonth($date);
+        $userId = $request['userId'];
+
+        return $expenses = $this->expenseRepository->getExpensesByMonth($userId, $date);
     }
 
 

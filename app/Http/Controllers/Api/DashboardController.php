@@ -66,13 +66,13 @@ class DashboardController extends Controller
         return $incomesForChart = $this->dashboardService->getIncomesYearForChart($request);
     }
 
-    public function getExpensesToBeDue()
+    public function getExpensesToBeDue(Request $request)
     {
-        return $expensesToBeDue = $this->dashboardService->getExpensesToBeDue();
+        return $expensesToBeDue = $this->dashboardService->getExpensesToBeDue($request);
     }
 
-    public function getIncomesToBeDue()
+    public function getIncomesToBeDue(Request $request)
     {
-        return $incomesToBeDue = $this->dashboardService->getIncomesToBeDue();
+        return $incomesToBeDue = $this->dashboardService->getIncomesToBeDue($request);
     }
 }

@@ -29,7 +29,7 @@ class ExpenseController extends Controller
 
     public function store(StoreUpdateExpense $request)
     {
-        if($request->installments > 1) {
+        if($request->fl_installment) {
             $expense = $this->expenseService->storeInstallment($request->all());
         }
         else {

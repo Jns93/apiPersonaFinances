@@ -10,8 +10,8 @@ class Expense extends Model
         'category_id',
         'subcategory_id',
         'name',
-        'amount',
-        'installments',
+        // 'amount',
+        // 'installments',
         'date',
         'user_id',
     ];
@@ -22,7 +22,11 @@ class Expense extends Model
 
     public function category()
     {
-        // return $this->hasOne('App\Models\Category', 'id');
         return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
+    public function installments()
+    {
+        return $this->hasMany('App\Models\Installment', 'expense_id', 'id');
     }
 }

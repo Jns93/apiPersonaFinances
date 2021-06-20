@@ -22,11 +22,8 @@ class CreateExpenses extends Migration
             $table->unsignedInteger('subcategory_id');
             $table->foreign('subcategory_id')->references('id')->on('subcategories');
             $table->string('name', 50);
-            $table->decimal('amount', 8, 2)->default('0');
-            $table->integer('installments')->default(1);
-            $table->date('due_date');
+            $table->boolean('fl_installment')->default(0);
             $table->timestamps();
-            $table->boolean('fl_pay')->default(0);
             $table->string('description', 100)->nullable();
             $table->boolean('fl_fixed')->default(0);
             $table->boolean('fl_essential')->default(0);

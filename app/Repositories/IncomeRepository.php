@@ -92,15 +92,21 @@ class IncomeRepository implements IncomeRepositoryInterface
 
     public function getAverageIncomes($userId, $year)
     {
-        return $teste = DB::table('incomes')
-                            ->select(
-                                DB::raw('sum(amount) as amount'),
-                                DB::raw('MONTH(due_date) month'))
-                            ->whereYear('due_date', $year)
-                            ->where('user_Id', '=', $userId)
-                            ->groupBy('month')
-                            ->get()
-                            ->avg('amount');
+        $teste = DB::table('incomes')
+                        ->select(
+                            DB::raw('sum(amount) as amount'),
+                            DB::raw('MONTH(due_date) month'))
+                        ->whereYear('due_date', $year)
+                        ->where('user_Id', '=', $userId)
+                        ->groupBy('month')
+                        ->get()
+                        ->avg('amount');
+
+        if(empty($teste)){
+            return $teste = 0;
+            } else {
+                return $teste;
+            }
     }
 
     public function getIncomesYearForChart($userId, $year)

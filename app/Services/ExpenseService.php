@@ -31,12 +31,20 @@ class ExpenseService
 
     public function store(array $request)
     {
-       return $expense = $this->expenseRepository->store($request);
+        if($request['fl_split']) {
+            return $this->expenseRepository->storeSplit($request);
+        } else {
+            return $this->expenseRepository->store($request);
+        }
     }
 
     public function storeInstallment(array $request)
     {
-        return $expense = $this->expenseRepository->storeInstallment($request);
+        if($request['fl_split']) {
+            return $this->expenseRepository->storeInstallmentSplit($request);
+        } else {
+            return $this->expenseRepository->storeInstallment($request);
+        }
     }
 
     public function delete($id)

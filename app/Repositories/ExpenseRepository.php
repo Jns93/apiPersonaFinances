@@ -45,7 +45,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newexpense->fl_essential = $request['fl_essential'];
             $newexpense->fl_fixed = $request['fl_fixed'];
             $newexpense->fl_split = $request['fl_split'];
-            $newexpense->fl_installment = $request['fl_installment'];
+            $newexpense->fl_installment = false;
             $newexpense->save();
 
             $newInstallment = new Installment();
@@ -71,7 +71,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newexpense->fl_essential = $request['fl_essential'];
                 $newexpense->fl_fixed = $request['fl_fixed'];
                 $newexpense->fl_split = $request['fl_split'];
-                $newexpense->fl_installment = $request['fl_installment'];
+                $newexpense->fl_installment = false;
                 $newexpense->save();
 
                 $newInstallment = new Installment();
@@ -98,7 +98,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $newexpense->fl_essential = $request['fl_essential'];
         $newexpense->fl_fixed = $request['fl_fixed'];
         $newexpense->fl_split = $request['fl_split'];
-        $newexpense->fl_installment = $request['fl_installment'];
+        $newexpense->fl_installment = true;
         $newexpense->save();
         for($i = 1; $i <= $request['installments']; $i++){
             $newInstallment = new Installment();
@@ -126,7 +126,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newexpense->fl_essential = $request['fl_essential'];
                 $newexpense->fl_fixed = $request['fl_fixed'];
                 $newexpense->fl_split = $request['fl_split'];
-                $newexpense->fl_installment = $request['fl_installment'];
+                $newexpense->fl_installment = true;
                 $newexpense->save();
                 $this->splitInstallment($request, $newexpense->id);
             }

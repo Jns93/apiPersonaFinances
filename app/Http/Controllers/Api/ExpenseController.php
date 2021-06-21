@@ -41,7 +41,7 @@ class ExpenseController extends Controller
 
     public function delete(Request $request)
     {
-        $expense = $this->expenseService->delete($request->id);
+        $expense = $this->expenseService->delete($request);
 
         return new ExpenseResource($expense);
     }

@@ -20,17 +20,19 @@ class ExpenseRepository implements ExpenseRepositoryInterface
     public function getExpenses($userId)
     {
         return Expense::where('user_Id', '=', $userId)
-                        ->with('category')->get();
+                        ->with('category')->with('installments')->get();
     }
 
     public function getExpensesByMonth($userId, $date)
     {
         $carbon = new Carbon($date);
-        // dd($carbon);
-        return Expense::whereMonth('due_date', '=', $carbon->month)
-                        ->where('user_Id', '=', $userId)
-                        ->whereYear('due_date', '=', $carbon->year)
+        return Expense::where('user_Id', '=', $userId)
                         ->with('category')
+                        ->with('installments')
+                        ->whereHas('installments', function ($query) use ($carbon) {
+                            $query->whereYear('installments.due_date', '=', $carbon->year);
+                            $query->whereMonth('installments.due_date', '=', $carbon->month);
+                        })
                         ->get();
     }
 
@@ -148,11 +150,15 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         }
     }
 
-    public function delete(int $id)
+    public function delete($request)
     {
-        $expense = Expense::find($id);
-        $expense->delete();
+        $id = $request['id'];
+        $expense_id = $request['expense_id'];
 
+        $installment = Installment::find($id);
+        $installment->delete();
+
+        $expense = Expense::find($expense_id);
         return $expense;
     }
 

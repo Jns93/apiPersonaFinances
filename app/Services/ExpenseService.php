@@ -47,9 +47,9 @@ class ExpenseService
         }
     }
 
-    public function delete($id)
+    public function delete($request)
     {
-        $expense = $this->expenseRepository->delete($id);
+        $expense = $this->expenseRepository->delete($request);
 
         return $expense;
     }

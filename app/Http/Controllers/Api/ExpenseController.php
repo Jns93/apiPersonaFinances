@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateExpense;
 use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\InstallmentResource;
 use App\Services\ExpenseService;
 use Illuminate\Http\Request;
 
@@ -50,7 +51,7 @@ class ExpenseController extends Controller
     {
         $expense = $this->expenseService->pay($request->all());
 
-        return new ExpenseResource($expense);
+        return new InstallmentResource($expense);
     }
 
     public function update(StoreUpdateExpense $request)

@@ -7,6 +7,7 @@ use App\Models\Installment;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class ExpenseRepository implements ExpenseRepositoryInterface
 {
@@ -28,12 +29,24 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $carbon = new Carbon($date);
         return Expense::where('user_Id', '=', $userId)
                         ->with('category')
-                        ->with('installments')
-                        ->whereHas('installments', function ($query) use ($carbon) {
-                            $query->whereYear('installments.due_date', '=', $carbon->year);
-                            $query->whereMonth('installments.due_date', '=', $carbon->month);
-                        })
+                        ->with(['installments' => function ($query) use ($carbon) {
+                            $query->where(DB::raw('YEAR(due_date)'), $carbon->year);
+                            $query->where(DB::raw('MONTH(due_date)'), $carbon->month);
+                        }])
                         ->get();
+
+        // $expenses = DB::table('expenses')
+        // ->join('installments', 'expenses.id', '=', 'installments.expense_id')
+        // ->join('categories', 'expenses.category_id', '=', 'categories.id')
+        // ->select('expenses.*', 'installments.*', 'categories.name as category_name')
+        // ->where('expenses.deleted_at', '=', null)
+        // ->where('expenses.user_id', $userId)
+        // ->whereYear('installments.due_date', $carbon->year)
+        // ->whereMonth('installments.due_date', $carbon->month)
+        // ->get();
+        // return $expenses;
+
+
     }
 
     public function store(array $request)
@@ -54,7 +67,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newInstallment->expense_id = $newexpense->id;
             $newInstallment->number_installment = 1;
             $newInstallment->amount_installments = $request['installments'];
-            $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+            $newInstallment->amount = floatval($amount);
             $newInstallment->due_date = $request['due_date'];
             $newInstallment->fl_pay = $request['fl_pay'];
             $newInstallment->save();
@@ -80,7 +95,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newInstallment->expense_id = $newexpense->id;
                 $newInstallment->number_installment = 1;
                 $newInstallment->amount_installments = $request['installments'];
-                $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+                // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+                $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+                $newInstallment->amount = floatval($amount)/2;
                 $newInstallment->due_date = $request['due_date'];
                 $newInstallment->fl_pay = $request['fl_pay'];
                 $newInstallment->save();
@@ -107,7 +124,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newInstallment->expense_id = $newexpense->id;
             $newInstallment->number_installment = $i;
             $newInstallment->amount_installments = $request['installments'];
-            $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+            $newInstallment->amount = floatval($amount);
             $newInstallment->due_date = $i > 1 ? $request['due_date'] = $carbon->add(30, 'day') : $request['due_date'];
             $newInstallment->fl_pay = $request['fl_pay'];
             $newInstallment->save();
@@ -143,7 +162,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newInstallmentUser1->expense_id = $expenseId;
             $newInstallmentUser1->number_installment = $i;
             $newInstallmentUser1->amount_installments = $request['installments'];
-            $newInstallmentUser1->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+            // $newInstallmentUser1->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+            $newInstallmentUser1->amount = floatval($amount)/2;
             $newInstallmentUser1->due_date = $i > 1 ? $request['due_date'] = $carbon->add(30, 'day') : $request['due_date'];
             $newInstallmentUser1->fl_pay = $request['fl_pay'];
             $newInstallmentUser1->save();
@@ -165,58 +186,68 @@ class ExpenseRepository implements ExpenseRepositoryInterface
     public function pay(array $ids)
     {
         foreach($ids as $item) {
-            $expenseUpdated = Expense::find($item['id']);
-            $expenseUpdated->fl_pay = 1;
-            $expenseUpdated->save();
+        $installmentUpdated = Installment::find($item['id']);
+        $installmentUpdated->fl_pay = 1;
+        $installmentUpdated->save();
         }
-        return $expenseUpdated;
+        return $installmentUpdated;
     }
 
     public function update(array $request)
     {
-        $expense = Expense::find($request['id']);
-        $expense->category_id = $request['category_id'];
-        $expense->subcategory_id = $request['subcategory_id'];
-        $expense->name = $request['name'];
-        $expense->description = $request['description'];
-        $expense->amount = str_replace(['.',','], ['','.'], $request['amount']);
-        $expense->installments = $request['installments'];
-        $expense->fl_pay = $request['fl_pay'];
-        $expense->fl_essential = $request['fl_essential'];
-        $expense->fl_fixed = $request['fl_fixed'];
-        $expense->due_date = $request['due_date'];
-        // $expense->fl_split = $request['fl_split'];
-        $expense->save();
+        try {
+            $expense = Expense::find($request['id']);
+            $expense->category_id = $request['category_id'];
+            $expense->subcategory_id = $request['subcategory_id'];
+            $expense->name = $request['name'];
+            $expense->description = $request['description'];
+            $expense->fl_essential = $request['fl_essential'];
+            $expense->fl_fixed = $request['fl_fixed'];
+            $expense->save();
 
-        return Expense::find($expense->id)->with('category')->get()->first();
+            $installment = Installment::find($request['installment']['id']);
+            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['installment']['amount']);
+            $installment->amount = floatval($amount);
+            $installment->due_date = $request['installment']['due_date'];
+            $installment->fl_pay = $request['installment']['fl_pay'];
+            $installment->save();
+
+            return Expense::find($expense->id)->with('category')->get()->first();
+        } catch (Error $e) {
+            throw new Error($e);
+        }
     }
 
     public function getTotalAmountExpensesByMonth($userId, $month)
     {
         $carbon = new Carbon($month);
 
-        return $amount = Expense::whereMonth('due_date', '=', $carbon->month)
-                        ->whereYear('due_date', '=', $carbon->year)
-                        ->where('user_id', '=', $userId)
-                        ->sum('amount');
+        $amount = DB::table('expenses')
+                                ->join('installments', 'expense_id', '=', 'expenses.id')
+                                ->whereMonth('installments.due_date', '=', $carbon->month)
+                                ->whereYear('installments.due_date', '=', $carbon->year)
+                                ->where('expenses.user_id', '=', $userId)
+                                ->sum('installments.amount');
+
+        return $amount;
     }
 
     public function getAverageExpenses($userId, $year)
     {
-        $teste = DB::table('expenses')
-                            ->select(
-                                DB::raw('sum(amount) as amount'),
-                                DB::raw('MONTH(due_date) month'))
-                            ->whereYear('due_date', $year)
-                            ->where('user_id', '=', $userId)
-                            ->groupBy('month')
-                            ->get()
-                            ->avg('amount');
+        $amount = DB::table('expenses')
+                        ->join('installments', 'expense_id', '=', 'expenses.id')
+                        ->select(
+                                DB::raw('sum(installments.amount) as amount'),
+                                DB::raw('MONTH(installments.due_date) month'))
+                        ->whereYear('installments.due_date', '=', $year)
+                        ->groupBy('month')
+                        ->get()
+                        ->avg('amount');
 
-        if(empty($teste)){
-           return $teste = 0;
+        if(empty($amount)){
+           return $amount = 0;
         } else {
-            return $teste;
+            return $amount;
         }
     }
 

@@ -25,7 +25,9 @@ class ExpenseService
         $date = $request['due_date'];
         $userId = $request['userId'];
 
-        return $expenses = $this->expenseRepository->getExpensesByMonth($userId, $date);
+        $expenses = $this->expenseRepository->getExpensesByMonth($userId, $date);
+        $expenses = $this->removeExpensesWithoutInstallments($expenses);
+        return $expenses;
     }
 
 
@@ -62,5 +64,15 @@ class ExpenseService
     public function update(array $request)
     {
         return $this->expenseRepository->update($request);
+    }
+
+    public function removeExpensesWithoutInstallments($queryResult)
+    {
+        foreach($queryResult as $key => $item) {
+            if(!$item->installments->count()) {
+                $queryResult->pull($key);
+            }
+        }
+        return $queryResult->toArray();
     }
 }

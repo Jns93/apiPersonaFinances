@@ -35,7 +35,8 @@ class IncomeRepository implements IncomeRepositoryInterface
             $newIncome->subcategory_id = $request['subcategory_id'];
             $newIncome->name = $request['name'];
             $newIncome->description = $request['description'];
-            $newIncome->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+            $newIncome->amount = floatval($amount);
             $newIncome->fl_pay = $request['fl_pay'];
             $newIncome->fl_fixed = $request['fl_fixed'];
             $newIncome->due_date = $request['due_date'];
@@ -71,7 +72,8 @@ class IncomeRepository implements IncomeRepositoryInterface
         $income->subcategory_id = $request['subcategory_id'];
         $income->name = $request['name'];
         $income->description = $request['description'];
-        $income->amount = str_replace(['.',','], ['','.'], $request['amount']);
+        $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
+        $income->amount = floatval($amount);
         $income->fl_pay = $request['fl_pay'];
         $income->fl_fixed = $request['fl_fixed'];
         $income->due_date = $request['due_date'];

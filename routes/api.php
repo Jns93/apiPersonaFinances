@@ -71,6 +71,7 @@ Route::group([
     Route::put('/incomes/pay', 'IncomeController@pay');
     Route::put('/incomes/update', 'IncomeController@update');
 
+    Route::get('/dashboard/indicators-month', 'DashboardController@getIndicatorsByMonth');
     Route::get('/dashboard/balance', 'DashboardController@getBalanceByMonth');
     Route::get('/dashboard/incomes/amount-total', 'DashboardController@getTotalAmountIncomesByMonth');
     Route::get('/dashboard/expenses/amount-total', 'DashboardController@getTotalAmountExpensesByMonth');

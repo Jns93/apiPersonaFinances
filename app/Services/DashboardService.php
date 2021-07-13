@@ -29,7 +29,8 @@ class DashboardService
         $month = $request['due_date'];
         $userId = $request['userId'];
 
-        return $totalAmountIncomes = $this->incomeRepository->getTotalAmountIncomesByMonth($userId, $month);
+        $totalAmountIncomes = $this->incomeRepository->getTotalAmountIncomesByMonth($userId, $month);
+        return $totalAmountIncomes;
     }
 
     public function getTotalAmountExpensesByMonth($request)
@@ -37,7 +38,8 @@ class DashboardService
         $month = $request['due_date'];
         $userId = $request['userId'];
 
-        return $totalAmountExpenses = $this->expenseRepository->getTotalAmountExpensesByMonth($userId, $month);
+        $totalAmountExpenses = $this->expenseRepository->getTotalAmountExpensesByMonth($userId, $month);
+        return $totalAmountExpenses;
     }
 
     public function calculateBalanceByMonth($request)
@@ -48,7 +50,8 @@ class DashboardService
         $totalAmountIncomes = $this->incomeRepository->getTotalAmountIncomesByMonth($userId, $month);
         $totalAmountExpenses = $this->expenseRepository->getTotalAmountExpensesByMonth($userId, $month);
 
-        return $balance = $totalAmountIncomes - $totalAmountExpenses;
+        $balance = $totalAmountIncomes - $totalAmountExpenses;
+        return $balance;
     }
 
     public function calculatePercentageOfSavingsByMonth($request)
@@ -63,7 +66,7 @@ class DashboardService
         if($totalAmountIncomes != null and $totalAmountExpenses != null) {
             $percentOfSavings = (($totalAmountIncomes - $totalAmountExpenses) * 100) / $totalAmountIncomes;
         }
-        return $percentOfSavings;
+        return number_format($percentOfSavings, 2, ',', '.');
     }
 
     public function calculateBalanceGoalByMonth($request)
@@ -73,7 +76,8 @@ class DashboardService
 
         $totalAmountIncomes = $this->incomeRepository->getTotalAmountIncomesByMonth($userId,
         $month);
-        return ($totalAmountIncomes * 30) / 100;
+        $totalAmountIncomes = ($totalAmountIncomes * 30) / 100;
+        return $totalAmountIncomes;
     }
 
     public function calculateAverageIncomesByYear($request)
@@ -81,7 +85,8 @@ class DashboardService
         $userId = $request['userId'];
         $year = $request['due_date'];
 
-        return $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
+        $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
+        return number_format($averageIncomes, 2, ',', '.');
     }
 
     public function calculateAverageExpensesByYear($request)

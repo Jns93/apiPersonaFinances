@@ -26,10 +26,10 @@ class DashboardRepository implements DashboardRepositoryInterface
         $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
         $averageExpenses = $this->expenseRepository->getAverageExpenses($userId, $year);
 
-        $percentOfSaving = 0;
+        $percentOfSavings = 0;
         if($averageIncomes != 0 and $averageExpenses != 0) {
-            $percentOfSaving = (($averageIncomes - $averageExpenses) * 100 / $averageIncomes);
+            $percentOfSavings = (($averageIncomes - $averageExpenses) * 100 / $averageIncomes);
         }
-        return number_format($percentOfSaving, 2, ',', '');
+        return number_format($percentOfSavings, 2, ',', '');
     }
 }

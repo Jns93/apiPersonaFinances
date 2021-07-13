@@ -16,30 +16,42 @@ class DashboardController extends Controller
         $this->dashboardService = $dashboardService;
     }
 
-    public function getBalanceByMonth(Request $request)
+    public function getIndicatorsByMonth(Request $request)
     {
-        return $balance = $this->dashboardService->calculateBalanceByMonth($request);
+        $data['totalExpenses'] = $this->dashboardService->getTotalAmountExpensesByMonth($request);
+        $data['totalIncomes'] = $totalAmountIncomes = $this->dashboardService->getTotalAmountIncomesByMonth($request);
+        $data['balance'] = $balance = $this->dashboardService->calculateBalanceByMonth($request);
+        $data['percentOfSavings'] = $this->dashboardService->calculatePercentageOfSavingsByMonth($request);
+        $data['balanceGoal'] = $this->dashboardService->calculateBalanceGoalByMonth($request);
+        $data['averageIncomes'] = $this->dashboardService->calculateAverageIncomesByYear($request);
+
+        return $data;
     }
 
-    public function getTotalAmountIncomesByMonth(Request $request)
-    {
-        return $totalAmountIncomes = $this->dashboardService->getTotalAmountIncomesByMonth($request);
-    }
+    // public function getBalanceByMonth(Request $request)
+    // {
+    //     return $balance = $this->dashboardService->calculateBalanceByMonth($request);
+    // }
 
-    public function getTotalAmountExpensesByMonth(Request $request)
-    {
-        return $totalAmountExpenses = $this->dashboardService->getTotalAmountExpensesByMonth($request);
-    }
+    // public function getTotalAmountIncomesByMonth(Request $request)
+    // {
+    //     return $totalAmountIncomes = $this->dashboardService->getTotalAmountIncomesByMonth($request);
+    // }
 
-    public function getPercentageOfSavingsByMonth(Request $request)
-    {
-        return $percentOfSavings = $this->dashboardService->calculatePercentageOfSavingsByMonth($request);
-    }
+    // public function getTotalAmountExpensesByMonth(Request $request)
+    // {
+    //     return $totalAmountExpenses = $this->dashboardService->getTotalAmountExpensesByMonth($request);
+    // }
 
-    public function getBalanceGoalByMonth(Request $request)
-    {
-        return $balanceGoal = $this->dashboardService->calculateBalanceGoalByMonth($request);
-    }
+    // public function getPercentageOfSavingsByMonth(Request $request)
+    // {
+    //     return $percentOfSavings = $this->dashboardService->calculatePercentageOfSavingsByMonth($request);
+    // }
+
+    // public function getBalanceGoalByMonth(Request $request)
+    // {
+    //     return $balanceGoal = $this->dashboardService->calculateBalanceGoalByMonth($request);
+    // }
 
     public function getAverageIncomesByYear(Request $request)
     {

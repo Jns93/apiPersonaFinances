@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Database\Factories\SubcategoryFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subcategory extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'SubCategories';
 
@@ -18,4 +20,9 @@ class Subcategory extends Model
     protected $hidden = [
         'id',
     ];
+
+    protected static function newFactory()
+    {
+        return SubcategoryFactory::new();
+    }
 }

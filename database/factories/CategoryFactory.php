@@ -3,11 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
+use App\Models\Category;
 
-class UserFactory extends Factory
+class CategoryFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = Category::class;
 
     /**
      * Define the model's default state.
@@ -17,10 +17,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->randomNumber(1, true),
+            'id' =>  $this->faker->randomNumber(1, true),
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ];
     }
 }

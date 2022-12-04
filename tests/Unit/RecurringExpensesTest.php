@@ -64,4 +64,25 @@ class RecurringExpensesTest extends TestCase
 
         $this->assertEquals($response->status(), 204);
     }
+
+    public function test_update_recurring_expense()
+    {
+        $this->repository = new RecurringExpenseRepository();
+
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        $recurring = RecurringExpense::factory()->create([
+            'category_id' => $category->id,
+            'subcategory_id' => $subcategory->id,
+            'user_id' => $user->id,
+            'fl_essential' => 0,
+            'fl_fixed' => 0,
+        ]);
+        $recurring = $recurring->toArray();
+        $recurring['description'] = 'TESTE UPDATE';
+        $response = $this->repository->update($recurring);
+
+        $this->assertEquals($response->status(), 200);
+    }
 }

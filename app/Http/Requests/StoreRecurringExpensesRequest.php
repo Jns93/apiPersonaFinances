@@ -13,7 +13,7 @@ class StoreRecurringExpensesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreRecurringExpensesRequest extends FormRequest
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'amount' => 'required',
-            'day_expiration' => 'required'
+            'expiration_day' => 'required'
         ];
     }
 
@@ -39,7 +39,7 @@ class StoreRecurringExpensesRequest extends FormRequest
             'category_id.required' => 'O campo categoria é obrigatorio',
             'subcategory_id.required' => 'O campo subcategoria é obrigatorio',
             'amount.required' => 'O campo valor é obrigatorio',
-            'day_expiration' => 'Informe o dia de vencimento'
+            'expiration_day' => 'Informe o dia de vencimento'
         ];
     }
 }

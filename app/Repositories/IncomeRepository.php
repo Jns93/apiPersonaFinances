@@ -133,4 +133,18 @@ class IncomeRepository implements IncomeRepositoryInterface
                         ->with('category')
                         ->get();
     }
+
+    public function getIncomestByMonthChart($userId, $date)
+    {
+        $carbon = new Carbon($date);
+        return DB::table('incomes')
+                        ->select([
+                            DB::raw("sum(amount) as amount"),
+                            DB::raw("MONTH(due_date) as month")
+                        ])
+                        ->whereYear('due_date', '=', $carbon->year)
+                        ->where('user_id', '=', $userId)
+                        ->groupBy('month')
+                        ->get();
+    }
 }

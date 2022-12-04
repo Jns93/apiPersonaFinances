@@ -19,7 +19,8 @@ class RecurringExpense extends Model
         'user_id',
         'fl_essential',
         'description',
-        'fl_fixed'
+        'fl_fixed',
+        'type'
     ];
 
     public function category()

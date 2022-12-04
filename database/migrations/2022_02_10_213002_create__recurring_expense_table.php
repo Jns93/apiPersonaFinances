@@ -29,6 +29,7 @@ class CreateRecurringExpenseTable extends Migration
             $table->string('description', 100)->nullable();
             $table->boolean('fl_fixed')->default(0);
             $table->softDeletes();
+            $table->string('type', 10)->default('Despesa');
         });
     }
 

@@ -14,27 +14,10 @@ use App\Models\User;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('teste', function() {
-//     $user = User::first();
-
-//     //Criando token com sanctum:
-//     $token = $user->createToken('name-token');
-// });
-//verifica se está autenticado e cria o token (fora do middleware pq ela valida se a senha esta certa e gera o token que passa pelo midle)
-
-
-// Route::group([
-//     'prefix' => 'v1',
-//     'middleware' => ['auth:sanctum']
-// ], function () {
-//     Route::get('/auth/me', 'Api\Auth\AuthUserController@me'); //Rota para recuperar user (requer o token gerado na rota sanctum/token)
-//     Route::post('/auth/logout', 'Api\Auth\AuthUserController@logout');
-// });
 Route::post('/v1/sanctum/token', 'Api\Auth\AuthUserController@auth');
 
 Route::group([
@@ -45,6 +28,12 @@ Route::group([
 ], function () {
     Route::get('/auth/me', 'Auth\AuthUserController@me'); //Rota para recuperar user (requer o token gerado na rota sanctum/token)
     Route::post('/auth/logout', 'Auth\AuthUserController@logout');
+
+    Route::get('/recurringExpenses', 'RecurringExpenseController@index');
+    Route::get('/recurringExpenses/execute', 'RecurringExpenseController@execute');
+    Route::post('/recurringExpenses/store', 'RecurringExpenseController@store');
+    Route::put('/recurringExpenses/update', 'RecurringExpenseController@update');
+    Route::delete('/recurringExpenses/delete', 'RecurringExpenseController@destroy');
 
     Route::get('/categories', 'CategoryController@index');
     Route::post('/categories/store', 'CategoryController@store');
@@ -80,8 +69,10 @@ Route::group([
     Route::get('/dashboard/incomes/average-incomes-by-Year', 'DashboardController@getAverageIncomesByYear');
     Route::get('/dashboard/expenses/average-expenses-by-Year', 'DashboardController@getAverageExpensesByYear');
     Route::get('/dashboard/average-percent-of-saving-by-Year', 'DashboardController@getAveragePercentOfSavingByYear');
-    Route::get('/dashboard/expenses/expenses-year-for-chart', 'DashboardController@getExpensesYearForChart');
-    Route::get('/dashboard/incomes/incomes-year-for-chart', 'DashboardController@getIncomesYearForChart');
+    Route::get('/dashboard/charts/expenses/by-category', 'DashboardController@getExpensestByCategoryChart');
+    Route::get('/dashboard/charts/expenses/by-month', 'DashboardController@getExpensestByMonthChart');
+    Route::get('/dashboard/charts/incomes/by-month', 'DashboardController@getIncomestByMonthChart');
+
     Route::get('/dashboard/expenses/expenses-to-be-due', 'DashboardController@getExpensesToBeDue');
     Route::get('/dashboard/incomes/incomes-to-be-due', 'DashboardController@getIncomesToBeDue');
 

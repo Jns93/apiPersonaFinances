@@ -251,18 +251,6 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         }
     }
 
-    public function getExpensesYearForChart($userId, $year)
-    {
-        return $expensesForChart = DB::table('expenses')
-                                        ->select(
-                                            DB::raw('sum(amount) as amount'),
-                                            DB::raw("MONTH(due_date) as month")
-                                        )
-                                        ->whereYear('due_date', $year)
-                                        ->groupBy(DB::raw("MONTH(due_date)"))
-                                        ->get();
-    }
-
     public function getExpensesToBeDue($userId)
     {
         $carbon = Carbon::now()->addDays(15);
@@ -273,4 +261,57 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                         ->with('category')
                         ->get();
     }
+
+    public function getExpensestByCategoryChart($userId, $date)
+    {
+        $carbon = new Carbon($date);
+        return DB::table('expenses')
+                        ->select([DB::raw("sum(installments.amount) as amount"), DB::raw("categories.name as category")])
+                        ->join('installments', 'expense_id', '=', 'expenses.id')
+                        ->join('categories', 'category_id', '=', 'categories.id')
+                        ->whereMonth('installments.due_date', '=', $carbon->month)
+                        ->whereYear('installments.due_date', '=', $carbon->year)
+                        ->where('expenses.user_id', '=', $userId)
+                        // ->sum('installments.amount')
+                        ->groupBy('category')
+                        ->orderBy('amount', 'asc')
+                        ->get();
+    }
+
+    public function getExpensestByMonthChart($userId, $date)
+    {
+        $carbon = new Carbon($date);
+        return DB::table('expenses')
+                        ->select([
+                            DB::raw("sum(installments.amount) as amount"),
+                            DB::raw("MONTH(installments.due_date) as month")
+                        ])
+                        ->join('installments', 'expense_id', '=', 'expenses.id')
+                        ->whereYear('installments.due_date', '=', $carbon->year)
+                        ->where('expenses.user_id', '=', $userId)
+                        ->groupBy('month')
+                        ->get();
+    }
+
+    public function getExpensesOrderByCategory($userId, $date)
+    {
+        //~DATA FROM TABLE
+        $dataTable = DB::table('expenses')
+                            ->select([
+                                DB::raw("expenses.name as nome"),
+                                DB::raw("categories.name as categoria"),
+                                DB::raw("installments.amount as total"),
+                                DB::raw("installments.due_date as data")
+                            ])
+                        ->join('installments', 'expense_id', '=', 'expenses.id')
+                        ->join('categories', 'categories.id', '=', 'expenses.category_id')
+                        ->whereMonth('installments.due_date', '=', $carbon->month)
+                            ->whereYear('installments.due_date', '=', $carbon->year)
+                            ->where('expenses.user_id', '=', $userId)
+                            ->groupBy('categoria', 'nome', 'total', 'data')
+                            ->get();
+    }
+
+
+
 }

@@ -85,8 +85,7 @@ class DashboardService
         $userId = $request['userId'];
         $year = $request['due_date'];
 
-        $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
-        return number_format($averageIncomes, 2, ',', '.');
+        return $averageIncomes = $this->incomeRepository->getAverageIncomes($userId, $year);
     }
 
     public function calculateAverageExpensesByYear($request)
@@ -133,5 +132,20 @@ class DashboardService
         $userId = $request['userId'];
 
         return $incomesToBeDue = $this->incomeRepository->getIncomesToBeDue($userId);
+    }
+
+    public function getExpensestByCategoryChart($request)
+    {
+        return $this->expenseRepository->getExpensestByCategoryChart($request['userId'], $request['due_date']);
+    }
+
+    public function getExpensestByMonthChart($request)
+    {
+        return $this->expenseRepository->getExpensestByMonthChart($request['userId'], $request['due_date']);
+    }
+
+    public function getIncomestByMonthChart($request)
+    {
+        return $this->incomeRepository->getIncomestByMonthChart($request['userId'], $request['due_date']);
     }
 }

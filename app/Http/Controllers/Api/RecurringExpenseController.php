@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\RecurringExpenses;
+use App\Models\RecurringExpense;
+use App\Models\RecurringHistory;
 use App\Http\Requests\StoreRecurringExpensesRequest;
 use App\Http\Requests\UpdateRecurringExpensesRequest;
+use App\Services\RecurringExpenseService;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
-class RecurringExpensesController extends Controller
+class RecurringExpenseController extends Controller
 {
     protected $service;
 
@@ -16,26 +20,14 @@ class RecurringExpensesController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $expenses = $this->service->index($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRecurringExpensesRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreRecurringExpensesRequest $request)
     {
-        $this->service->store($request);
-
+        return $this->service->store($request);
     }
 
     /**
@@ -78,8 +70,13 @@ class RecurringExpensesController extends Controller
      * @param  \App\Models\RecurringExpenses  $recurringExpenses
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RecurringExpenses $recurringExpenses)
+    public function destroy(Request $id)
     {
-        dd($recurringExpenses);
+        return $this->service->delete($id);
+    }
+
+    public function execute()
+    {
+        return $this->service->execute();
     }
 }

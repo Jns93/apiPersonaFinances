@@ -19,7 +19,10 @@ class CategoryController extends Controller
     }
 
     public function index()
+
     {
+        // dd($this->categoryService->getCategories());
+        // return $this->categoryService->getCategories();
         return CategoryReource::collection($this->categoryService->getCategories());
     }
 

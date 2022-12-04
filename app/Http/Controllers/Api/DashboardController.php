@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $data['totalIncomes'] = $totalAmountIncomes = $this->dashboardService->getTotalAmountIncomesByMonth($request);
         $data['balance'] = $balance = $this->dashboardService->calculateBalanceByMonth($request);
         $data['percentOfSavings'] = $this->dashboardService->calculatePercentageOfSavingsByMonth($request);
+        $data['averagePercentOfSavings'] = $this->dashboardService->calculateAveragePercentOfSavingByYear($request);
         $data['balanceGoal'] = $this->dashboardService->calculateBalanceGoalByMonth($request);
         $data['averageIncomes'] = $this->dashboardService->calculateAverageIncomesByYear($request);
         $data['averageExpenses'] = $this->dashboardService->calculateAverageExpensesByYear($request);

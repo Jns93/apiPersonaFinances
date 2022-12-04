@@ -240,6 +240,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                                 DB::raw('sum(installments.amount) as amount'),
                                 DB::raw('MONTH(installments.due_date) month'))
                         ->whereYear('installments.due_date', '=', $year)
+                        ->where('user_Id', '=', $userId)
                         ->groupBy('month')
                         ->get()
                         ->avg('amount');

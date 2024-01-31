@@ -42,15 +42,8 @@ class CategoryController extends Controller
 
     public function delete(Request $request)
     {
-        $category = $this->categoryService->delete($request->id);
-
-        return new CategoryReource($category);
+        $response = $this->categoryService->delete($request->id);
+        return $response;
     }
 
-    public function deleteteste(Request $request)
-    {
-
-        $category = Category::find($request->id);
-        $category->delete();
-    }
 }

@@ -41,7 +41,6 @@ class CategoryService
     public function delete($id)
     {
         $category = $this->categoryRepository->delete($id);
-
         return $category;
     }
 }

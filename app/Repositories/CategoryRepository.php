@@ -41,9 +41,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $category = Category::find($id);
         $category->delete();
-
         $category->subcategories()->delete();
-
-        return $category;
+        return response()->json(null, 204);;
     }
 }

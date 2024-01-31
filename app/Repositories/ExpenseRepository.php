@@ -311,6 +311,7 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                             ->where('expenses.user_id', '=', $userId)
                             ->groupBy('categoria', 'nome', 'total', 'data')
                             ->get();
+
     }
 
 

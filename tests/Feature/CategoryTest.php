@@ -10,13 +10,20 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase;
     private $url = 'api/v1/categories/';
+    public function test_get_categories()
+    {
+        $category = Category::factory(3)->create();
+        $response = $this->get($this->url);
+
+        $response->assertJsonCount(3, 'data');
+    }
     public function test_create_category()
     {
         $response = $this->postJson($this->url . 'store', [
             'name' => 'Nova Categoria',
         ]);
 
-        $response->assertStatus(201); // Verifica se a resposta é um sucesso
+        $response->assertStatus(201);
         $this->assertDatabaseHas('categories', ['name' => 'Nova Categoria']);
     }
 

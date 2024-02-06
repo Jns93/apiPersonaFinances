@@ -8,8 +8,6 @@ use App\Repositories\Contracts\RecurringExpenseRepositoryInterface;
 use App\Repositories\Contracts\ExpenseRepositoryInterface;
 use App\Repositories\Contracts\IncomeRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\RecurringHistory;
 
 class RecurringExpenseRepository implements RecurringExpenseRepositoryInterface

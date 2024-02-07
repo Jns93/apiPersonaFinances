@@ -35,7 +35,7 @@ Route::group([
     Route::get('/recurringExpenses/execute', 'RecurringExpenseController@execute');
     Route::post('/recurringExpenses/store', 'RecurringExpenseController@store');
     Route::put('/recurringExpenses/update', 'RecurringExpenseController@update');
-    Route::delete('/recurringExpenses/delete', 'RecurringExpenseController@destroy');
+    Route::delete('/recurringExpenses/{id}', 'RecurringExpenseController@destroy');
 
     Route::get('/categories', 'CategoryController@index');
     Route::post('/categories/store', 'CategoryController@store');

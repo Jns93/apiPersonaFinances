@@ -48,7 +48,7 @@ class RecurringExpenseRepository implements RecurringExpenseRepositoryInterface
 
     public function delete($id)
     {
-        $expense = RecurringExpense::find($id['id']);
+        $expense = RecurringExpense::find($id);
         $expense->delete();
 
         return $id;

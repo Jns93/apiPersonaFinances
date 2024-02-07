@@ -70,7 +70,7 @@ class RecurringExpenseController extends Controller
      * @param  \App\Models\RecurringExpenses  $recurringExpenses
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $id)
+    public function destroy($id)
     {
         return $this->service->delete($id);
     }

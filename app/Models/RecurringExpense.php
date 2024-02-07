@@ -20,7 +20,7 @@ class RecurringExpense extends Model
         'fl_essential',
         'description',
         'fl_fixed',
-        'type'
+        'type',
     ];
 
     public function category()

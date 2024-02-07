@@ -25,11 +25,11 @@ class RecurringExpenseService
         return $this->repository->store($request);
     }
 
-    public function delete($request)
+    public function delete($id)
     {
-        $expense = $this->repository->delete($request['id']);
+        $expense = $this->repository->delete($id);
 
-        return $expense;
+        return 200;
     }
 
     public function update(array $request)

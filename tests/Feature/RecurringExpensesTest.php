@@ -28,7 +28,7 @@ class RecurringExpensesTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_store_recurring_expense_success()
+    public function test_store_recurring_expense()
     {
         $category = Category::factory()->create([
             'id' => 1,
@@ -56,5 +56,36 @@ class RecurringExpensesTest extends TestCase
         $response = $this->postJson('/api/v1/recurringExpenses/store', $requestData);
 
         $response->assertStatus(201);
+    }
+
+    public function test_delete_recurring_expense()
+    {
+        $category = Category::factory()->create([
+            'id' => 1,
+            'name' => 'asdsadf'
+        ]);
+        $subcategory = Subcategory::factory()->create([
+            'id' => 1,
+            'category_id' => 1,
+            'name' => 'asdsadf'
+        ]);
+        $user = User::factory()->create();
+        $recurringExpense = RecurringExpense::factory()->create([
+            'category_id' => 1,
+            'subcategory_id' => 1,
+            'name' => 'Teste',
+            'amount' => 10,
+            'expiration_day' => 5,
+            'user_id' => $user->id,
+            'fl_essential' => 0,
+            'description' => 'teste',
+            'fl_fixed' => 1,
+            'type' => 1
+        ]);
+        $response = $this->delete('/api/v1/recurringExpenses/' . $recurringExpense['id']);
+        $response->assertStatus(200);
+
+        $response = $this->getJson('/api/v1/recurringExpenses');
+        $response->isEmpty();
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Resources\SubcategoryResource;
 use App\Models\SubCategory;
 use App\Services\SubcategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SubcategoryController extends Controller
 {
@@ -20,12 +21,13 @@ class SubcategoryController extends Controller
 
     public function getAllSubcategories()
     {
-        return SubcategoryResource::collection($this->subcategoryService->getAllSubcategories());
+        $subcategories = $this->subcategoryService->getAllSubcategories();
+        return SubcategoryResource::collection($subcategories);
     }
 
-    public function getSubcategoriesByCategory(StoreUpdateSubcategory $request)
+    public function getSubcategoriesByCategory($categoryId)
     {
-        $subcategories = $this->subcategoryService->getSubcategoriesByCategory($request->id_category);
+        $subcategories = $this->subcategoryService->getSubcategoriesByCategory($categoryId);
 
         return SubcategoryResource::collection($subcategories);
     }
@@ -44,10 +46,10 @@ class SubcategoryController extends Controller
         return new SubcategoryResource($subcategory);
     }
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $category = $this->subcategoryService->delete($request->id);
+        $category = $this->subcategoryService->delete($id);
 
-        return new SubcategoryResource($category);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

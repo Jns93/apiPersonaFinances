@@ -45,7 +45,7 @@ Route::group([
     Route::get('/subcategories/by-category/{categoryId}', 'SubcategoryController@getSubcategoriesByCategory');
     Route::get('/subcategories/all', 'SubcategoryController@getAllSubcategories');
     Route::post('/subcategories', 'SubcategoryController@store');
-    Route::put('/subcategories/update', 'SubcategoryController@update');
+    Route::put('/subcategories', 'SubcategoryController@update');
     Route::delete('/subcategories/{id}', 'SubcategoryController@delete');
 
     Route::get('/expenses', 'ExpenseController@index');

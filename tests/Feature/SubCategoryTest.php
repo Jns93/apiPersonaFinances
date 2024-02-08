@@ -23,7 +23,8 @@ class SubCategoryTest extends TestCase
         $response = $this->getJson('/api/v1/subcategories/by-category/1');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(1);
+        $response->assertJsonCount(1)
+                ->assertJsonFragment(['name' => $subcategory->name]);;
     }
     public function test_get_all_subcategories(): Void
     {
@@ -35,8 +36,8 @@ class SubCategoryTest extends TestCase
         ]);
         $response = $this->get('/api/v1/subcategories/all');
 
-        $response->assertStatus(200);
-        $response->assertJsonCount(2, 'data');
+        $response->assertStatus(200)
+                ->assertJsonCount(2, 'data');
     }
 
     public function test_delete_subcategory()
@@ -63,6 +64,23 @@ class SubCategoryTest extends TestCase
             'category_id' => 1,
             'name' => 'Tesadfdas'
         ]);
-        $response->assertJsonCount(1);
+        $response->assertJsonCount(1)
+                ->assertJsonFragment([ 'name' => 'Tesadfdas'])
+                ->assertStatus(201);
+    }
+    public function test_update_subcategory(): void
+    {
+        $category = Category::factory()->create();
+        $subcategory = Subcategory::factory()->create(['category_id' => $category->id]);
+        $newName = 'Nova Subcategoria';
+        $response = $this->putJson('/api/v1/subcategories/', [
+            'id' => $subcategory->id,
+            'name' => $newName
+        ]);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('subcategories', [
+            'id' => $subcategory->id,
+            'name' => $newName,
+        ]);
     }
 }

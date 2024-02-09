@@ -16,10 +16,10 @@ class RecurringExpenseFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->randomNumber(1, true),
-            'user_id' => $this->faker->randomNumber(1, true),
-            'category_id' => $this->faker->randomNumber(1, true),
-            'subcategory_id' => $this->faker->randomNumber(1, true),
+            'id' => $this->faker->randomNumber(),
+            'user_id' => $this->faker->randomNumber(),
+            'category_id' => $this->faker->randomNumber(),
+            'subcategory_id' => $this->faker->randomNumber(),
             'name' => $this->faker->name(),
             'amount' => 10,
             'expiration_day' => 5

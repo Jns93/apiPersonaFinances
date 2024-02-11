@@ -18,7 +18,7 @@ class SubcategoryFactory extends Factory
         return [
             'id' =>  $this->faker->randomNumber(),
             'category_id' => $this->faker->randomNumber(),
-            'name' => $this->faker->name(),
+            'name' => $this->faker->word(),
         ];
     }
 }

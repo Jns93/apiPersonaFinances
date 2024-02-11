@@ -28,10 +28,11 @@ class SubCategoryTest extends TestCase
     }
     public function test_get_all_subcategories(): Void
     {
+        $response = $this->get('/api/v1/subcategories/all');
         Category::factory()->create([
             'id' => 1,
         ]);
-        $subcategory = Subcategory::factory(2)->create([
+        $subcategory = Subcategory::factory()->count(2)->create([
             'category_id' => 1,
         ]);
         $response = $this->get('/api/v1/subcategories/all');
@@ -45,7 +46,7 @@ class SubCategoryTest extends TestCase
         Category::factory()->create([
             'id' => 1,
         ]);
-        $subcategory = Subcategory::factory(1)->create([
+        $subcategory = Subcategory::factory()->count(1)->create([
             'category_id' => 1,
         ]);
         $subcategories = $this->get('/api/v1/subcategories/all');

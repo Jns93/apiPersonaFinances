@@ -13,10 +13,8 @@ class ExpenseService
         $this->expenseRepository = $expenseRepository;
     }
 
-    public function getExpenses($request)
+    public function getExpenses($userId)
     {
-        $userId = $request['id'];
-
         return $expenses = $this->expenseRepository->getExpenses($userId);
     }
 
@@ -49,11 +47,9 @@ class ExpenseService
         }
     }
 
-    public function delete($request)
+    public function delete($id)
     {
-        $expense = $this->expenseRepository->delete($request);
-
-        return $expense;
+        return $this->expenseRepository->delete($id);
     }
 
     public function pay(array $ids)

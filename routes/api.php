@@ -42,12 +42,12 @@ Route::group([
     Route::put('/subcategories', 'SubcategoryController@update');
     Route::delete('/subcategories/{id}', 'SubcategoryController@delete');
 
-    Route::get('/expenses', 'ExpenseController@index');
-    Route::get('/expenses/byMonth', 'ExpenseController@getExpensesByMonth');
-    Route::post('/expenses/store', 'ExpenseController@store');
-    Route::delete('/expenses/delete', 'ExpenseController@delete');
+    Route::get('/expenses/by-user-id/{userId}', 'ExpenseController@index');
+    Route::get('/expenses/by-month', 'ExpenseController@getExpensesByMonth');
+    Route::post('/expenses', 'ExpenseController@store');
+    Route::delete('/expenses/{expenseId}', 'ExpenseController@delete');
     Route::put('/expenses/pay', 'ExpenseController@pay');
-    Route::put('/expenses/update', 'ExpenseController@update');
+    Route::put('/expenses', 'ExpenseController@update');
 
     Route::get('/incomes', 'IncomeController@index');
     Route::get('/incomes/byMonth', 'IncomeController@getIncomesByMonth');

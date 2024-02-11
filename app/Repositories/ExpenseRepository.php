@@ -56,22 +56,21 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newexpense->category_id = $request['category_id'];
             $newexpense->subcategory_id = $request['subcategory_id'];
             $newexpense->name = $request['name'];
-            $newexpense->description = $request['description'];
-            $newexpense->fl_essential = $request['fl_essential'];
-            $newexpense->fl_fixed = $request['fl_fixed'];
-            $newexpense->fl_split = $request['fl_split'];
+            $newexpense->description = isset($request['description'])? $request['description'] : '';
+            $newexpense->fl_essential = isset($request['fl_essential'])? $request['fl_essential'] : 0;
+            $newexpense->fl_fixed = isset($request['fl_fixed'])? $request['fl_fixed'] : 0;
+            $newexpense->fl_split = isset($request['fl_split'])? $request['fl_split'] : 0;
             $newexpense->fl_installment = false;
             $newexpense->save();
 
             $newInstallment = new Installment();
             $newInstallment->expense_id = $newexpense->id;
             $newInstallment->number_installment = 1;
-            $newInstallment->amount_installments = $request['installments'];
-            // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
+            $newInstallment->amount_installments = 1;
             $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
             $newInstallment->amount = floatval($amount);
             $newInstallment->due_date = $request['due_date'];
-            $newInstallment->fl_pay = $request['fl_pay'];
+            $newInstallment->fl_pay = isset($request['fl_pay'])? $request['fl_pay'] : 0;
             $newInstallment->save();
             return Expense::find($newexpense->id)->with('category')->with('installments')->orderBy('id', 'desc')->get()->first();
     }
@@ -84,9 +83,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newexpense->category_id = $request['category_id'];
                 $newexpense->subcategory_id = $request['subcategory_id'];
                 $newexpense->name = $request['name'];
-                $newexpense->description = $request['description'];
-                $newexpense->fl_essential = $request['fl_essential'];
-                $newexpense->fl_fixed = $request['fl_fixed'];
+                $newexpense->description = isset($request['description'])? $request['description'] : '';
+                $newexpense->fl_essential = isset($request['fl_essential'])? $request['fl_essential'] : 0;
+                $newexpense->fl_fixed = isset($request['fl_fixed'])? $request['fl_fixed'] : 0;
                 $newexpense->fl_split = $request['fl_split'];
                 $newexpense->fl_installment = false;
                 $newexpense->save();
@@ -94,12 +93,11 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newInstallment = new Installment();
                 $newInstallment->expense_id = $newexpense->id;
                 $newInstallment->number_installment = 1;
-                $newInstallment->amount_installments = $request['installments'];
-                // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
+                $newInstallment->amount_installments = 1;
                 $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
                 $newInstallment->amount = floatval($amount)/2;
                 $newInstallment->due_date = $request['due_date'];
-                $newInstallment->fl_pay = $request['fl_pay'];
+                $newInstallment->fl_pay = isset($request['fl_pay'])? $request['fl_pay'] : 0;
                 $newInstallment->save();
             }
             return Expense::find($newexpense->id)->with('category')->with('installments')->get()->first();
@@ -113,10 +111,10 @@ class ExpenseRepository implements ExpenseRepositoryInterface
         $newexpense->category_id = $request['category_id'];
         $newexpense->subcategory_id = $request['subcategory_id'];
         $newexpense->name = $request['name'];
-        $newexpense->description = $request['description'];
-        $newexpense->fl_essential = $request['fl_essential'];
-        $newexpense->fl_fixed = $request['fl_fixed'];
-        $newexpense->fl_split = $request['fl_split'];
+        $newexpense->description = isset($request['description'])? $request['description'] : '';
+        $newexpense->fl_essential = isset($request['fl_essential'])? $request['fl_essential'] : 0;
+        $newexpense->fl_fixed = isset($request['fl_fixed'])? $request['fl_fixed'] : 0;
+        $newexpense->fl_split = isset($request['fl_split'])? $request['fl_split'] : 0;
         $newexpense->fl_installment = true;
         $newexpense->save();
         for($i = 1; $i <= $request['installments']; $i++){
@@ -124,14 +122,13 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newInstallment->expense_id = $newexpense->id;
             $newInstallment->number_installment = $i;
             $newInstallment->amount_installments = $request['installments'];
-            // $newInstallment->amount = str_replace(['.',','], ['','.'], $request['amount']);
             $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
             $newInstallment->amount = floatval($amount);
             $newInstallment->due_date = $i > 1 ? $request['due_date'] = $carbon->add(30, 'day') : $request['due_date'];
-            $newInstallment->fl_pay = $request['fl_pay'];
+            $newInstallment->fl_pay = isset($request['fl_pay'])? $request['fl_pay'] : 0;
             $newInstallment->save();
         }
-        return Expense::find($newexpense->id)->with('category')->with('installments')->get()->first();
+        return Expense::find($newexpense->id)->with('category')->with('installments')->find($newexpense->id);
     }
 
     public function storeInstallmentSplit($request)
@@ -143,9 +140,9 @@ class ExpenseRepository implements ExpenseRepositoryInterface
                 $newexpense->category_id = $request['category_id'];
                 $newexpense->subcategory_id = $request['subcategory_id'];
                 $newexpense->name = $request['name'];
-                $newexpense->description = $request['description'];
-                $newexpense->fl_essential = $request['fl_essential'];
-                $newexpense->fl_fixed = $request['fl_fixed'];
+                $newexpense->description = isset($request['description'])? $request['description'] : '';
+                $newexpense->fl_essential = isset($request['fl_essential'])? $request['fl_essential'] : 0;
+                $newexpense->fl_fixed = isset($request['fl_fixed'])? $request['fl_fixed'] : 0;
                 $newexpense->fl_split = $request['fl_split'];
                 $newexpense->fl_installment = true;
                 $newexpense->save();
@@ -162,55 +159,58 @@ class ExpenseRepository implements ExpenseRepositoryInterface
             $newInstallmentUser1->expense_id = $expenseId;
             $newInstallmentUser1->number_installment = $i;
             $newInstallmentUser1->amount_installments = $request['installments'];
-            // $newInstallmentUser1->amount = str_replace(['.',','], ['','.'], $request['amount'])/2;
             $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
             $newInstallmentUser1->amount = floatval($amount)/2;
             $newInstallmentUser1->due_date = $i > 1 ? $request['due_date'] = $carbon->add(30, 'day') : $request['due_date'];
-            $newInstallmentUser1->fl_pay = $request['fl_pay'];
+            $newInstallmentUser1->fl_pay = isset($request['fl_pay'])? $request['fl_pay']: 0;
             $newInstallmentUser1->save();
         }
     }
 
-    public function delete($request)
+    public function delete($id)
     {
-        $id = $request['id'];
-        $expense_id = $request['expense_id'];
-
-        $installment = Installment::find($id);
-        $installment->delete();
-
-        $expense = Expense::find($expense_id);
-        return $expense;
+        $expense = Expense::find($id);
+        if($expense) {
+            $expense->installments()->delete();
+            $expense->delete();
+            return true;
+        }
+        return false;
     }
 
     public function pay(array $ids)
     {
         foreach($ids as $item) {
-        $installmentUpdated = Installment::find($item['id']);
-        $installmentUpdated->fl_pay = 1;
-        $installmentUpdated->save();
+            $expense = Expense::with('installments')->find($item);
+            if(!$expense) {
+                return false;
+            }
+            foreach ($expense->installments as $installment) {
+                $installment->update(['fl_pay' => 1]);
+            }
+            $updatedExpenses[] = $expense;
         }
-        return $installmentUpdated;
+        return $updatedExpenses;
     }
 
     public function update(array $request)
     {
+        if(isset($request['installment'])) {
+            $installment = $request['installment'];
+            unset($request['installment']);
+
+            if(isset($installment['amount'])) {
+                $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $installment['amount']);
+                $installment['amount'] = floatval($amount);
+            }
+        }
         try {
             $expense = Expense::find($request['id']);
-            $expense->category_id = $request['category_id'];
-            $expense->subcategory_id = $request['subcategory_id'];
-            $expense->name = $request['name'];
-            $expense->description = $request['description'];
-            $expense->fl_essential = $request['fl_essential'];
-            $expense->fl_fixed = $request['fl_fixed'];
-            $expense->save();
+            $expense->update($request);
 
-            $installment = Installment::find($request['installment']['id']);
-            $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['installment']['amount']);
-            $installment->amount = floatval($amount);
-            $installment->due_date = $request['installment']['due_date'];
-            $installment->fl_pay = $request['installment']['fl_pay'];
-            $installment->save();
+            if($installment) {
+                Installment::find($installment['id'])->update($installment);
+            }
 
             return Expense::find($expense->id)->with('category')->get()->first();
         } catch (Error $e) {

@@ -28,6 +28,8 @@ class StoreUpdateExpense extends FormRequest
             'category_id' => 'required',
             'subcategory_id' => 'required',
             'amount' => 'required',
+            'fl_split' => 'required',
+            'due_date' => 'required'
         ];
     }
 

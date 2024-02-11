@@ -18,9 +18,9 @@ class ExpenseController extends Controller
         $this->expenseService = $expenseService;
     }
 
-    public function index(Request $request)
+    public function index($userId)
     {
-        return $expenses = $this->expenseService->getExpenses($request);
+        return $expenses = $this->expenseService->getExpenses($userId);
     }
 
     public function getExpensesByMonth(Request $request)
@@ -30,31 +30,35 @@ class ExpenseController extends Controller
 
     public function store(StoreUpdateExpense $request)
     {
-        if($request['installments'] > 1) {
+        if(isset($request['installments']) && $request['installments'] > 1) {
             $expense = $this->expenseService->storeInstallment($request->all());
         }
         else {
             $expense = $this->expenseService->store($request->all());
         }
 
-        return $expense;
+        return response()->json($expense, 201);
     }
 
-    public function delete(Request $request)
+    public function delete($expenseId)
     {
-        $expense = $this->expenseService->delete($request);
-
-        return new ExpenseResource($expense);
+        $response = $this->expenseService->delete($expenseId);
+        if(!$response) {
+            return response()->json(['message' => 'Despesa não encontrada'], 404);
+        }
+        return response()->noContent();
     }
 
     public function pay(Request $request)
     {
-        $expense = $this->expenseService->pay($request->all());
-
-        return new InstallmentResource($expense);
+        $response = $this->expenseService->pay($request->all());
+        if(!$response) {
+            return response()->json(['message' => 'Despesa não encontrada'], 404);
+        }
+        return response()->json($response, 200);
     }
 
-    public function update(StoreUpdateExpense $request)
+    public function update(Request $request)
     {
         $expense = $this->expenseService->update($request->all());
 

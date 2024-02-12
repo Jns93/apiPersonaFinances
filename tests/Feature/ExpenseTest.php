@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Expense;
 use App\Models\Subcategory;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExpenseTest extends TestCase

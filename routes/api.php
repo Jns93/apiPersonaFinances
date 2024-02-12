@@ -50,7 +50,7 @@ Route::group([
     Route::put('/expenses', 'ExpenseController@update');
 
     Route::get('/incomes', 'IncomeController@index');
-    Route::get('/incomes/byMonth', 'IncomeController@getIncomesByMonth');
+    Route::get('/incomes/byMonth/{userId}/{dueDate}', 'IncomeController@getIncomesByMonth');
     Route::post('/incomes/store', 'IncomeController@store');
     Route::delete('/incomes/delete', 'IncomeController@delete');
     Route::put('/incomes/pay', 'IncomeController@pay');

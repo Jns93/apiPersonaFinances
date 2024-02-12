@@ -16,7 +16,7 @@ class IncomeService
     public function getIncomesByMonth($request)
     {
         $date = $request['due_date'];
-        $userId = $request['userId'];
+        $userId = $request['user_id'];
 
         return $incomes = $this->incomeRepository->getIncomesByMonth($userId, $date);
     }

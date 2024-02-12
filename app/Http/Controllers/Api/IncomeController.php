@@ -22,9 +22,13 @@ class IncomeController extends Controller
     //     return $expenses = $this->incomeService->getIncomes();
     // }
 
-    public function getIncomesByMonth(Request $request)
+    public function getIncomesByMonth($userId, $dueDate)
     {
-        return $expenses = $this->incomeService->getIncomesByMonth($request);
+        $req = [
+            'user_id' => $userId,
+            'due_date' => $dueDate
+        ];
+        return $this->incomeService->getIncomesByMonth($req);
     }
 
     public function store(StoreUpdateIncome $request)

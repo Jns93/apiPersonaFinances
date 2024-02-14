@@ -51,8 +51,8 @@ Route::group([
 
     Route::get('/incomes', 'IncomeController@index');
     Route::get('/incomes/byMonth/{userId}/{dueDate}', 'IncomeController@getIncomesByMonth');
-    Route::post('/incomes/store', 'IncomeController@store');
-    Route::delete('/incomes/delete', 'IncomeController@delete');
+    Route::post('/incomes', 'IncomeController@store');
+    Route::delete('/incomes/{incomeId}', 'IncomeController@delete');
     Route::put('/incomes/pay', 'IncomeController@pay');
     Route::put('/incomes/update', 'IncomeController@update');
 

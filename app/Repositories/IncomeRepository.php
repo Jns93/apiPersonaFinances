@@ -30,15 +30,15 @@ class IncomeRepository implements IncomeRepositoryInterface
     public function store(array $request)
     {
             $newIncome = new Income();
-            $newIncome->user_id = 1;
+            $newIncome->user_id = $request['user_id'];
             $newIncome->category_id = $request['category_id'];
             $newIncome->subcategory_id = $request['subcategory_id'];
             $newIncome->name = $request['name'];
-            $newIncome->description = $request['description'];
+            $newIncome->description = isset($request['description'])? $request['description'] : '';
             $amount = str_replace(['R$ ', '.', ','], ['', '', '.'], $request['amount']);
             $newIncome->amount = floatval($amount);
-            $newIncome->fl_pay = $request['fl_pay'];
-            $newIncome->fl_fixed = $request['fl_fixed'];
+            $newIncome->fl_pay = isset($request['fl_pay'])? $request['fl_pay']: 0;
+            $newIncome->fl_fixed = isset($request['fl_fixed'])? $request['fl_fixed']: 0;
             $newIncome->due_date = $request['due_date'];
             $newIncome->save();
 
@@ -50,9 +50,11 @@ class IncomeRepository implements IncomeRepositoryInterface
     public function delete(int $id)
     {
         $income = Income::find($id);
-        $income->delete();
-
-        return $income;
+        if($income) {
+            $income->delete();
+            return true;
+        }
+        return false;
     }
 
     public function pay(array $ids)

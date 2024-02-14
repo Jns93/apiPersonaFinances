@@ -29,9 +29,7 @@ class IncomeService
 
     public function delete($id)
     {
-        $income = $this->incomeRepository->delete($id);
-
-        return $income;
+        return $this->incomeRepository->delete($id);
     }
 
     public function pay(array $ids)

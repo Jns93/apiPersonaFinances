@@ -35,14 +35,14 @@ class IncomeController extends Controller
     {
         $expense = $this->incomeService->store($request->all());
 
-        return $expense;
+        return response()->json($expense, 201);
     }
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $expense = $this->incomeService->delete($request->id);
+        $expense = $this->incomeService->delete($id);
 
-        return new IncomeResource($expense);
+        return response()->noContent();
     }
 
     public function pay(Request $request)
